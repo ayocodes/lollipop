@@ -2,7 +2,31 @@
   "name": "lollipop-server",
   "version": "1.0.0",
   "description": "serves a simple api over peppermint batch engine",
-  "main": "index.js",
+  "scripts": {
+    "build": "yarn tsc",
+    "dev": "concurrently \"yarn tsc --watch\" \"nodemon -q lib/index.js\""
+  },
+  "type": "module",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "@taquito/signer": "^13.0.1",
+    "@taquito/taquito": "^13.0.1",
+    "console-stamp": "^3.0.3",
+    "pg": "^8.7.1",
+    "string-hex": "^1.0.0",
+    "promptly": "^3.2.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/node": "^17.0.41",
+    "concurrently": "^7.2.1",
+    "nodemon": "^2.0.16",
+    "typescript": "^4.7.3"
+  },
+  "main": "src/index.ts",
   "author": "kelvinpraises <kelvinpraises@gmail.com> ayocodes",
   "license": "MIT"
 }

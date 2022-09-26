@@ -1,0 +1,8 @@
+{
+  "name": "lollipop-server",
+  "version": "1.0.0",
+  "description": "serves a simple api over peppermint batch engine",
+  "main": "index.js",
+  "author": "kelvinpraises <kelvinpraises@gmail.com> ayocodes",
+  "license": "MIT"
+}

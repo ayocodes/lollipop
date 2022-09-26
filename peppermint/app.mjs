@@ -1,15 +1,15 @@
-import { createRequire } from "module";
-import { TezosToolkit, TezosOperationError } from "@taquito/taquito";
 import { InMemorySigner } from "@taquito/signer";
+import { TezosOperationError, TezosToolkit } from "@taquito/taquito";
+import { createRequire } from "module";
 
-import Queue from "./queue.mjs";
+import ConfLoader from "./confloader.mjs";
 import {
-  parse_rpc_error,
-  postprocess_error_object,
+	parse_rpc_error,
+	postprocess_error_object
 } from "./errorhandler/tezos_error.mjs";
 import MultiassetHandler from "./operations/nft-multiasset.mjs";
 import TezHandler from "./operations/tez.mjs";
-import ConfLoader from "./confloader.mjs";
+import Queue from "./queue.mjs";
 
 const Handlers = {
   MultiassetHandler,
@@ -62,7 +62,7 @@ const main = async function () {
         return handling_function(command.args, batch);
       }
     }
-    console.warn("Invalid comand:", JSON.stringify(command));
+    console.warn("Invalid command:", JSON.stringify(command));
     return false;
   };
 
@@ -154,7 +154,7 @@ const main = async function () {
         batch_divider = 1; // reset batch divider
         return true;
       } else {
-        // FIXME: Taquito .confirmation() gives us some interesting and underdocumented results
+        // FIXME: Taquito .confirmation() gives us some interesting and undocumented results
         // it should be possible to prepare for chain reorgs based on it
         console.error(
           "Operation group with hash",
@@ -184,7 +184,7 @@ const main = async function () {
           case "storage_exhausted.operation":
             // There seems to be a bug in the node that may give this error when the account is low on tez
             console.warn(
-              "Retriable Tezos error encountered:\n",
+              "Retryable Tezos error encountered:\n",
               tezos_error,
               "\nRetrying operations with ids:",
               JSON.stringify(batched_ids)
@@ -196,7 +196,7 @@ const main = async function () {
           default:
             // Everything else
             console.error(
-              "Non-retriable Tezos error encountered:\n",
+              "Non-retryable Tezos error encountered:\n",
               tezos_error,
               "\nRejecting operations with ids:",
               JSON.stringify(batched_ids)
@@ -232,10 +232,4 @@ const main = async function () {
   }
 };
 
-main()
-  .then(() => {
-    console.log("bye!");
-  })
-  .catch((err) => {
-    console.log("An error has ocurred outside the main event loop.\n", err);
-  });
+export default main

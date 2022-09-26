@@ -1,6 +1,8 @@
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
+
+import main from "../peppermint/app.mjs";
 import mintNFT from "./features/mint-nft/index.js";
 import sendNFT from "./features/send-nft/index.js";
 import sendTEZ from "./features/send-tez/index.js";
@@ -10,6 +12,14 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT;
+
+main()
+  .then(() => {
+    console.log("bye!");
+  })
+  .catch((err) => {
+    console.log("An error has ocurred outside the main event loop.\n", err);
+  });
 
 app.use(cors({ origin: true }));
 

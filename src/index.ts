@@ -7,9 +7,8 @@ import main from "../peppermint/app.mjs";
 import mintNFT from "./features/mint-nft/index.js";
 import sendNFT from "./features/send-nft/index.js";
 import sendTEZ from "./features/send-tez/index.js";
-import customLogger from "./utils/costumLogger.js";
 import { handleError } from "./utils/middleware.js";
-import streamLogs from "./features/stream-logs";
+import streamLogs, { customLogger } from "./features/stream-logs";
 
 console.log = customLogger;
 

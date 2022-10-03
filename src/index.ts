@@ -1,13 +1,14 @@
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
-import { URL } from "url";
 
 import main from "../peppermint/app.mjs";
+import createMintNFT from "./features/create-mint-nft/index.js";
+import createNFT from "./features/create-nft/index.js";
 import mintNFT from "./features/mint-nft/index.js";
-import sendNFT from "./features/send-nft/index.js";
 import sendTEZ from "./features/send-tez/index.js";
 import streamLogs, { customLogger } from "./features/stream-logs/index.js";
+import transferNFT from "./features/transfer-nft/index.js";
 import { handleError } from "./utils/middleware.js";
 
 console.log = customLogger;
@@ -15,7 +16,8 @@ console.log = customLogger;
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT;
+const PORT = process.env.PORT;
+const WS_PORT = process.env.WS_PORT;
 
 main()
   .then(() => {
@@ -31,37 +33,46 @@ app.use((req, res, next) => {
   handleError(express.json(), req, res, next);
 });
 
-app.get("/", (_, res) => {
-  res.sendStatus(400);
-});
+app.use("/", express.static("public"));
 
-app.post("/mint-nft", async (req, res) => {
-  await mintNFT(req, res);
-});
-
-app.post("/send-nft", async (req, res) => {
-  await sendNFT(req, res);
-});
-
-app.post("/send-tez", async (req, res) => {
+app.post("/api/send-tez", async (req, res) => {
   await sendTEZ(req, res);
 });
 
+app.post("/api/transfer-nft", async (req, res) => {
+  await transferNFT(req, res);
+});
+
+app.post("/api/create-nft", async (req, res) => {
+  await createNFT(req, res);
+});
+
+app.post("/api/mint-nft", async (req, res) => {
+  await mintNFT(req, res);
+});
+
+app.post("/api/create-mint-nft", async (req, res) => {
+  await createMintNFT(req, res);
+});
+
 /// Returns relevant server stats and logs.
-app.get("/server-stats", (_, res) => {
+app.get("/api/server-stats", (_, res) => {
   res.sendStatus(400);
 });
 
-const httpServer = app.listen(port, () => {
-  console.log(`🔥 [server]: Server is running at https://localhost:${port}`);
+app.listen(PORT, () => {
+  console.log(`🔥 [server]: Server running at https://localhost:${PORT}`);
 });
 
 // Websocket.
-httpServer.on("upgrade", (request, socket, head) => {
-  const url = request?.url;
-  const urlParams = url ? new URL(url) : null;
+const httpServer = app.listen(WS_PORT, () => {
+  console.log(`🔥 [ws server]: Websocket running at ws://localhost:${WS_PORT}`);
+});
 
-  if (urlParams?.pathname === "/stream-logs") {
+httpServer.on("upgrade", (request, socket, head) => {
+  console.log(request.url);
+
+  if (request.url == "/stream-logs") {
     streamLogs.handleUpgrade(request, socket, head, function done(ws) {
       streamLogs.emit("connection", ws, request);
     });

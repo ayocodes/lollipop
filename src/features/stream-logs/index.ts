@@ -10,11 +10,9 @@ wss.on("connection", (ws) => {
 const cl = console.log;
 
 export async function customLogger(...args: any[]) {
-  JSON.stringify(args);
-
   if (wss.clients.size > 0) {
     wss.clients.forEach((client) => {
-      client.send(args);
+      client.send(JSON.stringify(args));
     });
   }
 

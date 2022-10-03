@@ -1,0 +1,27 @@
+{
+  "batchSize": 110,
+  "confirmations": 1,
+  "privateKey": "edskRjk4uUGizvKr9tbmXBdwYj4mgjFx32wVcZU1WAW2T2ekn4XLu9Wr3JsE5nAoX9NfiR2N1kkxx7bMbxe3UZ2XRuikutw9UX",
+  "rpcUrl": "https://ghostnet.tezos.marigold.dev/",
+  "pollingDelay": 10000,
+  "timeout": 300,
+  "dbConnection": {
+    "user": "kelvx",
+    "password": null,
+    "host": "localhost",
+    "port": 5432,
+    "database": "peppermint"
+  },
+  "handlers": {
+    "nft": {
+      "handler": "MultiassetHandler",
+      "args": {
+        "contract_address": "KT1RbTB5tDXpeZzYobv7yiutqSYL71K3nnDf"
+      }
+    },
+    "tez": {
+      "handler": "TezHandler",
+      "args": {}
+    }
+  }
+}

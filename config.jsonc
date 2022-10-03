@@ -1,0 +1,22 @@
+// This is an auto generated file
+{
+  "batchSize": 110,
+  "confirmations": 1,
+  "privateKey": "edsksomething",
+  "rpcUrl": "https://ghostnet.tezos.marigold.dev/",
+  "pollingDelay": 10000,
+  "timeout": 300,
+  "dbConnection": {
+    "user": "",
+    "host": "localhost",
+    "port": 5432,
+    "database": "peppermint"
+  },
+  "handlers": {
+    "nft": {
+      "handler": "MultiassetHandler",
+      "args": { "contract_address": "KTsomething" }
+    },
+    "tez": { "handler": "TezHandler", "args": {} }
+  }
+}
